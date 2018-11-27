@@ -1,0 +1,39 @@
+<h1>Lucky Draw Registration</h1>
+
+<form [formGroup]="regForm" (ngSubmit)="onSubmit()">
+
+    <h5 *ngIf="success">Registration is done Successfully!</h5>
+
+    <div *ngIf="!success" class="results">
+
+      <label>
+        Name:
+        <input type="text" formControlName="name">
+        <div *ngIf="submitted && regForm.controls.name.errors" class="error">
+          <div *ngIf="regForm.controls.name.errors.required">Your name is required</div>
+        </div>
+      </label>
+  
+      <label>
+        Email:
+        <input type="text" formControlName="email">
+        <div *ngIf="submitted && regForm.controls.email.errors" class="error">
+          <div *ngIf="regForm.controls.email.errors.required">An email is required</div>
+          <div *ngIf="regForm.controls.email.errors.pattern">Email not valid</div> 
+        </div>
+      </label>
+
+    
+      <input type="submit" value="Register" class="cta">
+
+    </div>
+  
+  </form>
+
+  <div *ngIf="submitted" class="results">
+    <strong>Name:</strong> 
+    <span>{{ regForm.controls.name.value }}</span>
+
+    <strong>Email:</strong> 
+    <span>{{ regForm.controls.email.value }}</span>
+  </div>
