@@ -9,11 +9,23 @@ let User = require('../models/User');
 userRoutes.route('/add').post(function (req, res) {
   let user = new User(req.body);
   user.save()
-    .then(game => {
-    res.status(200).json({'user': 'Registration is done successfully'});
+    .then(user => {
+      console.log("user saved: " + user);
+      res.json(user);
     })
     .catch(err => {
-    res.status(400).send("unable to save to database");
+      console.log("add user error: " + err);
+      console.log("err.message: " + err.message);
+
+      if(err.message.includes("E11000")) {
+
+        res.status(400).send("This email has been registered!");
+
+      } else {
+
+        res.status(400).send("Error in registration, please try again!");
+      }
+
     });
 });
 

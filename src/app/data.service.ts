@@ -17,7 +17,6 @@ export class DataService {
       name: name,
       email: email
     };
-    this.http.post(`${this.uri}/add`, obj)
-        .subscribe(res =>  { console.log('Done') });
+    return this.http.post(`${this.uri}/add`, obj);
   }
 }

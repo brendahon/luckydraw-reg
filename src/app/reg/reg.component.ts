@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from '../../../models/User';
+import { User } from "./User";
+import 'rxjs/add/operator/map';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-reg',
@@ -15,6 +17,9 @@ export class RegComponent implements OnInit {
   regForm: FormGroup;
   submitted = false;
   success = false;
+
+  user: User;
+  message: String;
 
   constructor(private data: DataService, private formBuilder: FormBuilder) { }
 
@@ -32,14 +37,31 @@ export class RegComponent implements OnInit {
         return;
     }
 
-    this.addUser(this.regForm.controls.name.value, this.regForm.controls.email.value );
+    this.addUser(this.regForm.controls.name.value, this.regForm.controls.email.value ).subscribe( (data: User) => {
+      this.user = data;
 
-    this.success = true;
+      console.log("user retrieved: " + this.user);
 
+      if(this.user._id) {
+        this.message = "Registration is done Successfully!";
+        this.success = true;
+      } else {
+        this.message = "Error in registration, please try again!"; 
+      }
+
+    }, (err: HttpErrorResponse) => {
+
+        console.log("err: " + err);
+        console.log("err.message: " + err.message);
+        this.message = err.error;
+
+    });
+    
+    console.log("message: " + this.message);
   }
 
   addUser(name, email) {
-    this.data.addUser(name, email);
+    return this.data.addUser(name, email);
   }
 
 }

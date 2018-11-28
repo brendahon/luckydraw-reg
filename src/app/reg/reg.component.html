@@ -2,7 +2,8 @@
 
 <form [formGroup]="regForm" (ngSubmit)="onSubmit()">
 
-    <h5 *ngIf="success">Registration is done Successfully!</h5>
+    <h5 *ngIf="success" > {{ message }} </h5>
+    <h5  style="color: #F00;" *ngIf="!success" > {{ message }} </h5>
 
     <div *ngIf="!success" class="results">
 
